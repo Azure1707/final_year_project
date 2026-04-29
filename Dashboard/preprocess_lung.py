@@ -8,12 +8,12 @@ from skimage import measure, morphology
 from sklearn.cluster import KMeans
 
 
-def png_u16_to_hu(png_u16):
+def png_to_hu(png_u16):
     x4095 = (png_u16.astype(np.float32) / 65535.0) * 4095.0
     return x4095 - 1024.0
 
 
-def window_to_01(hu, center=-600, width=1500):
+def window(hu, center=-600, width=1500):
     lo = center - width / 2.0
     hi = center + width / 2.0
     x = np.clip(hu, lo, hi)
@@ -73,9 +73,8 @@ def crop_to_mask_square(img, mask, margin=12):
 
 
 def segment_lung_mask(img01):
-    """
-    Strict lung-only mask.
-    """
+    #Strict lung-only mask.
+    
     img = img01.copy()
 
     mean = np.mean(img)
@@ -102,10 +101,9 @@ def segment_lung_mask(img01):
     centers = sorted(kmeans.cluster_centers_.flatten())
     threshold = np.mean(centers)
 
-    # dark regions -> candidate lungs
     thresh_img = (img < threshold).astype(np.uint8)
 
-    # mild cleanup only
+    # mild cleanup
     mask = morphology.erosion(thresh_img, morphology.footprint_rectangle((2, 2)))
     mask = morphology.dilation(mask, morphology.footprint_rectangle((6, 6)))
 
@@ -157,12 +155,12 @@ def remove_tiny_bright_speckles(x01, size_thresh  = 50, thr = 0.98):
 
 
 
-def preprocess_lung_only(png_u16, size=256, normalize_to_minus1_1=False):
+def preprocess_slice(png_u16, size=256):
     if png_u16.ndim == 3:
         png_u16 = cv2.cvtColor(png_u16, cv2.COLOR_BGR2GRAY)
 
-    hu = png_u16_to_hu(png_u16)
-    x01 = window_to_01(hu, center=-600, width=1500)
+    hu = png_to_hu(png_u16)
+    x01 = window(hu, center=-600, width=1500)
 
     lung_mask = segment_lung_mask(x01)
     lung_only = apply_lung_mask(x01, lung_mask)
@@ -172,8 +170,5 @@ def preprocess_lung_only(png_u16, size=256, normalize_to_minus1_1=False):
     lung_crop = remove_tiny_bright_speckles(lung_crop, size_thresh=50, thr=0.98)
     
     lung_crop = resize_to_256(lung_crop, size=size).astype(np.float32)
-
-    if normalize_to_minus1_1:
-        lung_crop = lung_crop * 2.0 - 1.0
 
     return lung_crop

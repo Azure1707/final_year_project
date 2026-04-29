@@ -6,25 +6,25 @@ import pandas as pd
 ROOT = Path("./data_png_wholeslice_unlabelled/Centre10")
 OUT = Path("./data_png_wholeslice_unlabelled/Centre10_split")
 
-TRAIN_RATIO = 0.70
-VAL_RATIO = 0.15
-TEST_RATIO = 0.15
+train = 0.70
+val = 0.15
+test = 0.15
 
 random.seed(42)
 
 def ensure_dir(p):
     p.mkdir(parents=True, exist_ok=True)
 
-def split_patients(patients):
+def split(patients):
     random.shuffle(patients)
 
-    n = len(patients)
-    n_train = int(n * TRAIN_RATIO)
-    n_val = int(n * VAL_RATIO)
+    total = len(patients)
+    train_n = int(total * train_ratio)
+    val_n = int(total * val_ratio)
 
-    train = patients[:n_train]
-    val = patients[n_train:n_train+n_val]
-    test = patients[n_train+n_val:]
+    train = patients[:train_n]
+    val = patients[train_n:train_n + val_n]
+    test = patients[train_n + val_n:]
 
     return train, val, test
 
@@ -37,14 +37,14 @@ def copy_group(patients, label, split_name):
 
 def main():
 
-    nodule_patients = [p.name for p in (ROOT/"nodule").iterdir() if p.is_dir()]
-    normal_patients = [p.name for p in (ROOT/"no_nodule").iterdir() if p.is_dir()]
+    nodule = [p.name for p in (ROOT/"nodule").iterdir() if p.is_dir()]
+    normal = [p.name for p in (ROOT/"no_nodule").iterdir() if p.is_dir()]
 
     print("Patients:")
-    print("nodule:", len(nodule_patients))
-    print("no_nodule:", len(normal_patients))
+    print("nodule:", len(nodule))
+    print("no_nodule:", len(normal))
 
-    # split each class separately (stratified)
+    # split each class
     n_train, n_val, n_test = split_patients(nodule_patients)
     nn_train, nn_val, nn_test = split_patients(normal_patients)
 

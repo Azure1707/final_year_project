@@ -22,5 +22,4 @@ def preprocess_roi_from_uint16png(img, size = 128):
 
     hu = png_uint16_to_hu(img)
     x = apply_window_hu(hu, center=-600, width=1500) 
-    x = x * 2.0 - 1.0   # for tanh GAN
     return x 

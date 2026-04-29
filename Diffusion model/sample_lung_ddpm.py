@@ -33,6 +33,7 @@ class SinusoidalPositionEmbeddings(nn.Module):
         return emb
 
 #Blocks
+
 class ConvBlock(nn.Module):
     def __init__(self, in_ch, out_ch, time_emb_dim=None):
         super().__init__()
@@ -189,7 +190,7 @@ class DDPM(nn.Module):
 
 def main():
     os.makedirs(OUT_DIR, exist_ok=True)
-
+    
     model = SimpleUNet(
         in_channels=1,
         out_channels=1,
