@@ -241,9 +241,19 @@ def show_gradcam(image, stage):
 #prediction label and confidence outputs
 def show_result(label, confidence, probs):
     col1, col2 = st.columns(2)
+    
+    # Smaller font using HTML
+    col1.markdown(
+        f"<p style='font-size:16px; margin-bottom:0;'>Prediction</p>"
+        f"<p style='font-size:20px; font-weight:bold;'>{label}</p>",
+        unsafe_allow_html=True
+    )
 
-    col1.metric("Prediction", label)
-    col2.metric("Confidence", f"{confidence:.2%}")
+    col2.markdown(
+        f"<p style='font-size:16px; margin-bottom:0;'>Confidence</p>"
+        f"<p style='font-size:20px; font-weight:bold;'>{confidence:.2%}</p>",
+        unsafe_allow_html=True
+    )
 
     st.markdown("Class Probabilities")
 
