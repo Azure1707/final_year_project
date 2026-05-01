@@ -19,13 +19,13 @@ preprocess_roi.py contains code to prepare ROI crops for stage 2.
 ##Diffusion model folder
 Contains code for diffusion model
 
-##WGAN-GP folder
+## WGAN-GP folder
 Contains code for WGAN-GP model
 
-##Models folder
+## Models folder
 Contains all the classification models for both stages
 
-##Dashboard
+## Dashboard
 Contains the code for the final dashboard
 
 
