@@ -4,7 +4,7 @@
 ### For stage 1:
 prep_stage_1.py extracts images from the LIDC dataset, converting DICOM images to PNG and saving the 
 create_stage_1_labels.py labels slices and stores the labels in a csv file 
-sort_whole_clices_10each.py used the csv file containing labels to extract 10 slices each patient for the final dataset
+sort_whole_slices_10each.py used the csv file containing labels to extract 10 slices each patient for the final dataset
 split_while_slices.py splits the dataset into training, validation and test sets
 
 ### For stage 2:
