@@ -16,7 +16,7 @@ copy_into_dir_stage2.py uses the splits csv file to copy the actual cropped ROI 
 preprocess_lung.py contains code to prepare ct slice images for stage 1.
 preprocess_roi.py contains code to prepare ROI crops for stage 2.
 
-##Diffusion model folder
+## Diffusion model folder
 Contains code for diffusion model
 
 ## WGAN-GP folder
